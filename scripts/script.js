@@ -4,16 +4,21 @@
 const issuesContainer=document.getElementById('issuesContainer');
 const loadingSpinner=document.getElementById('loadingSpinner');
 let currentTab='all';
+let allIssues=[];
 const tabActive=['bg-blue-700','border-blue-700', 'text-white'];
-const tabInactive=['bg-transparent','text-slate-700','border-slate-200','text-black']
+const tabInactive=['bg-transparent','text-slate-700','border-slate-200','text-black'];
+const allContainer=document.getElementById("all-container")
+const openContainer=document.getElementById("open-container")
+const closedContainer=document.getElementById("closed-container")
 function switchTab(tab){
-    console.log(tab);
+    
     currentTab=tab;
     const tabs=['all','open','closed'];
 
     for(const t of tabs){
         const tabName=document.getElementById('tab-'+ t);
         if(t ===tab){
+            currentTab=t;
             tabName.classList.remove(...tabInactive);
             tabName.classList.add(...tabActive);
         }
@@ -22,8 +27,21 @@ function switchTab(tab){
             tabName.classList.add(...tabInactive);
         }
     }
-    loadIssues();
+
+    if(tab ==='all'){
+        allContainer.classList.remove('hidden');
+    }
+    else if(tab==='open'){
+        openContainer.classList.remove('hidden');
+    }
+    else if(tab==='closed'){
+        closedContainer.classList.remove('hidden');
+    }
+    
+  loadIssues()
+    displayIssues(allIssues);
 }
+switchTab(currentTab);
 function showLoading(){
     loadingSpinner.classList.remove('hidden');
     loadingSpinner.classList.add('flex');
@@ -46,6 +64,7 @@ async function loadIssues(){
     showLoading();
     const res=await fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
     const data=await res.json();
+    allIssues=data.data;
    hideLoading();
 displayIssues(data.data);
 }
@@ -54,7 +73,15 @@ displayIssues(data.data);
 
 function displayIssues(issues){
 console.log(issues);
-issues.forEach(issue => {
+issuesContainer.innerHTML='';
+let filteredIssues=issues;
+if(currentTab=='open'){
+    filteredIssues=issues.filter(issue=>issue.status==="open");
+}
+else if(currentTab=='closed'){
+    filteredIssues=issues.filter(issue=>issue.status==="closed");
+}
+filteredIssues.forEach(issue => {
 
     let priorityClass=" ";
     if(issue.priority=== "high"){
@@ -103,4 +130,5 @@ issues.forEach(issue => {
     
 });
 }
+switchTab('all');
 loadIssues();
