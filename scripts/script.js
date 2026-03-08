@@ -10,6 +10,7 @@ const tabInactive=['bg-transparent','text-slate-700','border-slate-200','text-bl
 const allContainer=document.getElementById("all-container")
 const openContainer=document.getElementById("open-container")
 const closedContainer=document.getElementById("closed-container")
+const issuesDetailsModal=document.getElementById("issuesDetailsModal")
 function switchTab(tab){
     
     currentTab=tab;
@@ -129,6 +130,9 @@ filteredIssues.forEach(issue => {
   
     
 });
+}
+function openModal(){
+    issuesDetailsModal.showModal();
 }
 switchTab('all');
 loadIssues();
