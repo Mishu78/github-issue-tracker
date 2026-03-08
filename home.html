@@ -65,10 +65,10 @@
     </div>
   </div>
     <section class="mx-auto w-full mt-10 max-w-6xl bg-white geist-normal"> 
-        <div class=" flex gap-2 p-4  items-center shadow-md justify-start w-full rounded-lg">
-          <button class="btn btn-primary">All</button>
-          <button class="btn btn-outline">Open</button>
-          <button class="btn btn-outline">Closed</button>
+        <div id="buttonContainer" class=" flex gap-2 p-4  items-center shadow-md justify-start w-full rounded-lg">
+          <button id='tab-all' class="btn btn-outline" onclick="switchTab('all')">All</button>
+          <button id="tab-open" class="btn btn-outline"onclick="switchTab('open')">Open</button>
+          <button id="tab-closed" class="btn btn-outline"onclick="switchTab('closed')">Closed</button>
         </div>
         <div class="flex justify-between mt-6 bg-white shadow-md p-6 rounded-lg">
             <div class="flex items-center gap-x-2">
