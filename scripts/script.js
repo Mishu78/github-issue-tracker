@@ -29,7 +29,7 @@ function switchTab(tab){
     for(const t of tabs){
         const tabName=document.getElementById('tab-'+ t);
         if(t ===tab){
-            currentTab=t;
+            
             tabName.classList.remove(...tabInactive);
             tabName.classList.add(...tabActive);
         }
@@ -38,6 +38,12 @@ function switchTab(tab){
             tabName.classList.add(...tabInactive);
         }
     }
+    showLoading();
+    setTimeout(()=>{
+        displayIssues(allIssues);
+        hideLoading();
+    },1000)
+    
 
     if(tab ==='all'){
         allContainer.classList.remove('hidden');
@@ -49,8 +55,6 @@ function switchTab(tab){
         closedContainer.classList.remove('hidden');
     }
     
-  loadIssues()
-    displayIssues(allIssues);
 }
 switchTab(currentTab);
 function showLoading(){
