@@ -10,7 +10,17 @@ const tabInactive=['bg-transparent','text-slate-700','border-slate-200','text-bl
 const allContainer=document.getElementById("all-container")
 const openContainer=document.getElementById("open-container")
 const closedContainer=document.getElementById("closed-container")
-const issuesDetailsModal=document.getElementById("issuesDetailsModal")
+const issuesDetailsModal=document.getElementById("issues-details-modal")
+const modalTitle=document.getElementById('modal-title')
+const modalStatus=document.getElementById('modal-status')
+const modalAuthor=document.getElementById('modal-author')
+const modalCreatedAt=document.getElementById('modal-createdAt')
+const modalLabels=document.getElementById('modal-labels')
+const modalDescription=document.getElementById('modal-description')
+const modalAssignee=document.getElementById('modal-assignee')
+const modalPriority=document.getElementById('modal-priority')
+const issueCount=document.getElementById('issueCount');
+
 function switchTab(tab){
     
     currentTab=tab;
@@ -82,6 +92,7 @@ if(currentTab=='open'){
 else if(currentTab=='closed'){
     filteredIssues=issues.filter(issue=>issue.status==="closed");
 }
+issueCount.textContent=`${filteredIssues.length} issues`;
 filteredIssues.forEach(issue => {
 
     let priorityClass=" ";
@@ -92,7 +103,7 @@ filteredIssues.forEach(issue => {
         priorityClass="badge-warning";
     }
     else if(issue.priority==="low"){
-        priorityClass="badge-outline"
+        priorityClass="bg-gray-200 text-gray-700"
     }
 
     let borderColorClass="";
@@ -102,6 +113,8 @@ filteredIssues.forEach(issue => {
     else if(issue.status==='closed'){
        borderColorClass='border-t-4 border-t-purple-500' 
     }
+
+
     const card=document.createElement('div');
     card.className=`card w-full bg-base-100 shadow-sm ${borderColorClass}`;
     card.innerHTML=`
@@ -111,13 +124,30 @@ filteredIssues.forEach(issue => {
         <div id="priority" class="badge badge-primary ${priorityClass}">${issue.priority.toUpperCase()}</div>
     </div>
     
-    <h2 id="issue-title" class="font-semibold text-lg mb-1">${issue.title}</h2>
+    <h2 id="issue-title" class="font-semibold text-lg mb-1" onclick="openIssueModal(${issue.id})">${issue.title}</h2>
     <p id="issue-description" class="text-xs text-gray-500 mb-3 line-clamp-2">${issue.description}</p>
    
     
    
     <div class="flex gap-2 mb-3 flex-wrap">
-    ${issue.labels.map(label =>`<span class="badge badge-error badge-outline text-xs">${label}</span>`).join('')}</span>
+    ${issue.labels.map(label =>{
+         let labelColorClass="";
+         if(label==="bug"){
+        labelColorClass="bg-red-200 text-red-600"
+    }
+    else if(label==="help wanted"){
+        labelColorClass="bg-yellow-200 text-red-600"
+    }
+    else if(label==="documentation"){
+        labelColorClass="bg-purple-200 text-red-700"
+    }
+    else if(label==="good first issue"){
+        labelColorClass="bg-blue-200 text-green-700"
+    }
+    else if(label==="enhancement"){
+        labelColorClass="bg-green-200 text-green-700"
+    }
+    return `<span class="badge text-xs ${ labelColorClass}">${label.toUpperCase()}</span>`}).join('')}</span>
     </div>
     <div class="text-xs text-gray-400 border-t pt-2">
         <p>${issue.author}</p>
@@ -131,7 +161,51 @@ filteredIssues.forEach(issue => {
     
 });
 }
-function openModal(){
+async function openIssueModal(issueId){
+    const res= await fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issue/${issueId}`)
+    const data= await res.json();
+    const issueDetails = data.data;
+    
+    console.log(issueDetails,'data');
+    
+
+    modalTitle.textContent=issueDetails.title;
+    modalStatus.textContent=issueDetails.status;
+    modalAuthor.textContent=issueDetails.author;
+    modalCreatedAt.textContent=issueDetails.createdAt;
+    modalLabels.innerHTML=issueDetails.labels.map(label=>{
+        let labelColorClass="";
+         if(label==="bug"){
+        labelColorClass="bg-red-200 text-red-600"
+    }
+    else if(label==="help wanted"){
+        labelColorClass="bg-yellow-200 text-red-600"
+    }
+    else if(label==="documentation"){
+        labelColorClass="bg-purple-200 text-red-700"
+    }
+    else if(label==="good first issue"){
+        labelColorClass="bg-blue-200 text-green-700"
+    }
+    else if(label==="enhancement"){
+        labelColorClass="bg-green-200 text-green-700"
+    }
+    return `<span class="badge text-xs ${ labelColorClass}">${label.toUpperCase()}</span>`}).join('');
+    modalDescription.textContent=issueDetails.description;
+    modalAssignee.textContent=issueDetails.assignee;
+    let priorityClass=" ";
+    if(issueDetails.priority=== "high"){
+        priorityClass="badge-error";
+    }
+    else if(issueDetails.priority=== "medium"){
+        priorityClass="badge-warning";
+    }
+    else if(issueDetails.priority==="low"){
+        priorityClass="bg-gray-200 text-gray-700"
+    }
+    modalPriority.className=`badge ${priorityClass}`;
+    modalPriority.textContent=issueDetails.priority.toUpperCase();
+
     issuesDetailsModal.showModal();
 }
 switchTab('all');
