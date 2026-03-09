@@ -122,13 +122,13 @@ filteredIssues.forEach(issue => {
     const card=document.createElement('div');
     card.className=`card w-full bg-base-100 shadow-sm ${borderColorClass}`;
     card.innerHTML=`
-     <div class="card-body">
+     <div class="card-body" onclick="openIssueModal(${issue.id})">
     <div class="flex justify-between">
         <img src="./assets/Open-Status.png" alt="">
         <div id="priority" class="badge badge-primary ${priorityClass}">${issue.priority.toUpperCase()}</div>
     </div>
     
-    <h2 id="issue-title" class="font-semibold text-lg mb-1" onclick="openIssueModal(${issue.id})">${issue.title}</h2>
+    <h2 id="issue-title" class="font-semibold text-lg mb-1">${issue.title}</h2>
     <p id="issue-description" class="text-xs text-gray-500 mb-3 line-clamp-2">${issue.description}</p>
    
     
