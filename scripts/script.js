@@ -212,5 +212,19 @@ async function openIssueModal(issueId){
 
     issuesDetailsModal.showModal();
 }
+
+async function searchIssues(){
+    const search = document.getElementById('searchInput').value;
+    if(!search){
+     displayIssues(allIssues);
+     return;
+    }
+    showLoading();
+
+    const res= await fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${search}`)
+    const data=await res.json();
+    hideLoading();
+    displayIssues(data.data);
+}
 switchTab('all');
 loadIssues();

@@ -28,16 +28,16 @@
         <ul tabindex="-1" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
           <li>
             <div class="relative w-full max-w-xs mb-4">
-              <input id="searchInput" type="text" placeholder="Search Issues" class="input input-bordered w-full pl-10" />
+              <input id="searchInputMobile" type="text" placeholder="Search Issues" class="input input-bordered w-full pl-10" />
 
-              <div class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
-                <i class="fa-solid fa-magnifying-glass"></i>
-              </div>
+              <button class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+                <i class="fa-solid fa-magnifying-glass"></i>Search
+              </button>
             </div>
           </li>
 
           <li>
-            <a class="btn btn-primary"> <i class="fa-solid fa-plus"></i> New Issue</a>
+            <a class="btn btn-primary" onclick="searchIssues()"> <i class="fa-solid fa-plus"></i> New Issue</a>
           </li>
          
         </ul>
@@ -54,14 +54,14 @@
     <div class="hidden lg:flex navbar-end ">
 
       <div class="relative w-full max-w-xs mr-4">
-        <input type="text" placeholder="Search Issues" class="input input-bordered w-full pl-10" />
+        <input id="searchInput" type="text" placeholder="Search Issues" class="input input-bordered w-full pl-10" />
 
-        <div class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+        <button class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
           <i class="fa-solid fa-magnifying-glass"></i>
-        </div>
+        </button>
       </div>
 
-      <a class="btn btn-primary"> <i class="fa-solid fa-plus"></i> New Issue</a>
+      <a  onclick="searchIssues()" class="btn btn-primary"> <i class="fa-solid fa-plus"></i> New Issue</a>
     </div>
   </div>
 
